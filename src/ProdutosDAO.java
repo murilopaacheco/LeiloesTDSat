@@ -102,7 +102,49 @@ public ArrayList<ProdutosDTO> listarProdutos() {
     return listagem;
 }
     
-    
+ public void venderProduto(int id) {
+
+    String sql = "UPDATE produtos SET status = ? WHERE id = ?";
+
+    conn = new conectaDAO().connectDB();
+
+    if (conn == null) {
+        JOptionPane.showMessageDialog(
+                null,
+                "Não foi possível conectar ao banco de dados."
+        );
+        return;
+    }
+
+    try {
+
+        prep = conn.prepareStatement(sql);
+
+        prep.setString(1, "Vendido");
+        prep.setInt(2, id);
+
+        int linhasAlteradas = prep.executeUpdate();
+
+        if (linhasAlteradas > 0) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Produto vendido com sucesso!"
+            );
+        } else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Produto não encontrado."
+            );
+        }
+
+    } catch (Exception erro) {
+
+        JOptionPane.showMessageDialog(
+                null,
+                "Erro ao vender produto:\n" + erro.getMessage()
+        );
+    }
+}   
     
         
 }
